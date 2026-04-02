@@ -1,0 +1,66 @@
+@use "../global/resources" as *;
+
+.post-details {
+  position: relative;
+  border: none;
+  box-shadow: none;
+}
+
+.post-details__wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.post-details__main-block {
+  width: 760px;
+  border: 1px solid $light-lavender;
+}
+
+.post-details__image-wrapper {
+  margin-top: -1px;
+}
+
+.post-details__user {
+  width: 399px;
+  padding: 27px 39px 45px 40px;
+  background-color: $white;
+  border: 1px solid $light-lavender;
+  border-left: none;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.post-details__user-info {
+  margin-bottom: 23px;
+}
+
+.post-details__name-wrapper {
+  padding-top: 6px;
+}
+
+.post-details__avatar {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  margin-right: 21px
+}
+
+.post-details__rating {
+  margin-bottom: 23px;
+  border: 1px solid $light-lavender;
+  border-radius: 5px;
+}
+
+.post-details__rating-item {
+  width: 50%;
+  border-left: 1px solid $light-lavender;
+
+  &:first-child {
+    border: none;
+  }
+}
+
+.post-details__user-buttons {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,20 @@
+@use "../global/resources" as *;
+
+.login__label {
+  margin-bottom: 10px;
+}
+
+.login__input-wrapper {
+  width: 760px;
+  margin-bottom: 22px;
+}
+
+.login__input {
+  width: 100%;
+}
+
+.login__submit {
+  margin-top: 18px;
+  padding: 21px 75px 19px 76px;
+  letter-spacing: 0.7px;
+}

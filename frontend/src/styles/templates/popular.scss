@@ -1,0 +1,143 @@
+@use "../global/resources" as *;
+
+.popular__filters-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.popular__posts {
+  // display: grid;
+  // display: -ms-grid;
+  // -ms-grid-columns: 1fr 1fr 1fr;
+  // grid-template-columns: 1fr 1fr 1fr;
+  // align-items: start;
+  display: flex;
+  // flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  // max-height: 1200px;
+  margin-bottom: 18px;
+}
+
+.popular__post {
+  width: 360px;
+  margin-right: 40px;
+  margin-bottom: 41px;
+  // grid-row-end: auto;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+
+  // &:nth-child(3n-2) {
+  //   -ms-grid-column: 1;
+  // }
+
+  // &:nth-child(3n-1) {
+  //   -ms-grid-column: 2;
+  // }
+
+  // &:nth-child(3n+3) {
+  //   -ms-grid-column: 3;
+  // }
+
+  // &:nth-child(n+4):nth-child(-n+6) {
+  //   -ms-grid-row: 2;
+  // }
+
+  // &:nth-child(n+7):nth-child(-n+9) {
+  //   -ms-grid-row: 3;
+  // }
+
+  // &:nth-child(n+10):nth-child(-n+12) {
+  //   -ms-grid-row: 4;
+  // }
+
+  // &:nth-child(n+13):nth-child(-n+15) {
+  //   -ms-grid-row: 5;
+  // }
+
+  // &:nth-child(n+16):nth-child(-n+18) {
+  //   -ms-grid-row: 6;
+  // }
+
+  // &:nth-child(n+19):nth-child(-n+21) {
+  //   -ms-grid-row: 7;
+  // }
+
+  // &:nth-child(n+22):nth-child(-n+24) {
+  //   -ms-grid-row: 8;
+  // }
+
+  // &:nth-child(n+25):nth-child(-n+27) {
+  //   -ms-grid-row: 9;
+  // }
+
+  // &:nth-child(n+28):nth-child(-n+30) {
+  //   -ms-grid-row: 10;
+  // }
+}
+
+.popular__sorting {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  max-width: 510px;
+  margin-right: 60px;
+  padding-top: 17px;
+}
+
+.popular__sorting-caption {
+  margin-bottom: 15px;
+}
+
+.popular__sorting-list {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.popular__filters {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 550px;
+}
+
+.popular__filters-caption {
+  margin-bottom: 15px;
+}
+
+.popular__filters-list {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.popular__filters-item {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+  margin-left: 5px;
+
+  &--all {
+    width: 85px;
+  }
+}
+
+.popular__page-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.popular__page-link {
+  width: 48.276%;
+  padding: 26px 20px 25px;
+  text-align: center;
+  letter-spacing: 0.8px;
+}

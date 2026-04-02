@@ -1,0 +1,283 @@
+@use "../global/resources" as *;
+
+.post:not(.post--details) {
+  border: 1px solid $light-lavender;
+  border-radius: 30px;
+  background-color: $white;
+  box-shadow: 0px 15px 40px 0px rgba(46, 91, 255, 0.09);
+}
+
+.post {
+  border: 1px solid $light-lavender;
+  border-radius: 30px;
+  background-color: $white;
+  box-shadow: 0px 15px 40px 0px rgba(46, 91, 255, 0.09);
+
+  &:not(.post--details) h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 500;
+
+    a:hover,
+    a:focus {
+      opacity: 0.7;
+    }
+
+    a:active {
+      opacity: 0.3;
+    }
+  }
+}
+
+.popular__post.post {
+  h2 {
+    padding: 27px 24px 24px;
+    font-size: 20px;
+  }
+}
+
+.profile__post.post {
+  h2 {
+    padding: 29px 40px 26px;
+  }
+}
+
+.popular__post {
+  .post__author {
+    padding: 25px 26px;
+    border-bottom: 1px solid $light-lavender;
+  }
+
+  .post__avatar-wrapper {
+    margin-right: 12px;
+  }
+
+  .post__info {
+    padding-top: 3px;
+  }
+
+  .post__author-name {
+    font-size: 16px;
+  }
+
+  .post__time {
+    font-size: 14px;
+  }
+
+  .post__indicators {
+    padding: 22px 23px 23px;
+  }
+
+  .post__indicator {
+    font-size: 14px;
+  }
+
+  .post__indicator-icon {
+    top: -1px;
+  }
+}
+
+.profile__post {
+  .post__author {
+    padding: 27px 29px 22px;
+  }
+}
+
+.post__author {
+  display: flex;
+  padding: 26px 29px 22px;
+}
+
+.post__info {
+  padding-top: 8px;
+}
+
+.post__avatar-wrapper {
+  margin-right: 21px;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  background-color: #e2e8f7;
+  background-image: url("../img/icon-input-user.svg");
+  border-radius: 50%;
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &--repost {
+    position: relative;
+    margin-left: 38px;
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: -38px;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background-color: #eff1f8;
+      background-image: url("../img/icon-repost.svg");
+      background-size: 19px 17px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+    }
+  }
+}
+
+.popular__post .post__avatar-wrapper {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+}
+
+.post__author-link {
+  display: flex;
+  align-items: flex-start;
+
+  &:hover,
+  &:focus {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
+
+.post__author-avatar {
+  display: block;
+  border-radius: 50%;
+}
+
+.post__author-name {
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.post__time {
+  line-height: 1.25;
+  color: $service;
+}
+
+.post__footer {
+  .post__time {
+    line-height: 1.1;
+  }
+}
+
+.post__indicators {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 41px 27px 44px;
+}
+
+.post-details {
+  .post__indicators {
+    padding-top: 25px;
+  }
+}
+
+.post__buttons {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.post__indicator {
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $service;
+  letter-spacing: 1.5px;
+
+  span {
+    line-height: 1;
+  }
+
+  &:active {
+    color: rgba($service, 0.3);
+  }
+
+  &:hover .post__indicator-icon,
+  &:focus .post__indicator-icon {
+    opacity: 0.5;
+  }
+
+  &:active .post__indicator-icon {
+    opacity: 0.1;
+  }
+
+  &:hover .post__indicator-icon--like-active,
+  &:focus .post__indicator-icon--like-active {
+    opacity: 1;
+  }
+
+  &:active .post__indicator-icon--like-active {
+    opacity: 0.1;
+  }
+
+  &--likes-active .post__indicator-icon {
+    display: none;
+  }
+
+  &--likes-active .post__indicator-icon--like-active {
+    display: block;
+  }
+}
+
+.post__view {
+  padding-left: 37px;
+  color: $service;
+  background-image: url("../img/view.svg");
+  background-size: 24px 13px;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+
+.post__indicator-icon {
+  position: relative;
+  margin-right: 9px;
+  opacity: 0.3;
+  fill: #192144;
+  transition: opacity 0.3s;
+
+  &--like-active {
+    display: none;
+    opacity: 0.6;
+    fill: $alizarin-red;
+  }
+}
+
+.post__tags {
+  @include list-reset;
+  margin-top: -5px;
+  margin-bottom: 26px;
+  padding: 0 41px;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  li {
+    display: inline;
+    line-height: 1.375;
+  }
+
+  a {
+    color: $service;
+
+    &:hover,
+    &:focus {
+      color: $main;
+    }
+
+    &:active {
+      color: rgba($main, 0.2);
+    }
+  }
+}

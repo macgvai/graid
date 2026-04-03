@@ -10,7 +10,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::with(['author', 'contentType', 'hashtags'])->paginate(20);
+        return 'test';
+//        return Post::with(['author', 'contentType', 'hashtags'])->paginate(20);
     }
 
     public function show(Post $post)

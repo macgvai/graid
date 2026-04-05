@@ -2,64 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        return User::all();
-    }
 
-    public function store(Request $request)
+    public function login(Request $request)
     {
-        $data = $request->validate([
-            'registered_at' => 'nullable|date',
-            'email' => 'required|email|unique:users',
-            'login' => 'required|string|unique:users',
-            'password' => 'required|string|min=6',
-            'avatar' => 'nullable|string',
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        $data['password'] = Hash::make($data['password']);
-
-        return User::create($data);
-    }
-
-    public function show(User $user)
-    {
-        return $user;
-    }
-
-    public function update(Request $request, User $user)
-    {
-        $data = $request->validate([
-            'registered_at' => 'nullable|date',
-            'email' => 'email|unique:users,email,' . $user->id,
-            'login' => 'string|unique:users,login,' . $user->id,
-            'password' => 'nullable|string|min=6',
-            'avatar' => 'nullable|string',
-        ]);
-
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Неверный email или пароль'
+            ], 401);
         }
 
-        $user->update($data);
+        $user = Auth::user();
 
-        return $user;
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
-    public function destroy(User $user)
+    public function register(StoreUserRequest $request)
     {
-        $user->delete();
+        $validated = $request->validated();
 
-        return response()->noContent();
+
+        $user = User::create([
+            'login' => $validated['login'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+            $user->save();
+        }
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ], 201);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        // Отзываем текущий токен
+        $user->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Токен отозван'
+        ]);
     }
 }

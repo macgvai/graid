@@ -6,8 +6,13 @@ use App\Http\Controllers\PostController;
 
 
 Route::post('/register', [UserController::class, 'register'])->name('register ');
+Route::post('/login', [UserController::class, 'login'])->name('login ');
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); //
+    Route::get('/posts/{id}', [PostController::class, 'show']);
+});
 
 
 
-Route::get('/posts', [PostController::class, 'index']); // список постов
-Route::get('/posts/{id}', [PostController::class, 'show']); // один пост

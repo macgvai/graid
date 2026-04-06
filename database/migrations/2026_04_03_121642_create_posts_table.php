@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('video')->nullable();
             $table->string('link')->nullable();
+            $table->string('link_preview')->nullable();
             $table->unsignedBigInteger('views')->default(0);
 
             $table->timestamps();

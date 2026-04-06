@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -19,26 +20,23 @@ class PostController extends Controller
         return $post->load(['author', 'contentType', 'hashtags']);
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'content_type_id' => 'required|exists:content_types,id',
-            'title' => 'nullable|string',
-            'text_content' => 'nullable|string',
-            'quote_author' => 'nullable|string',
-            'image' => 'nullable|string',
-            'video' => 'nullable|string',
-            'link' => 'nullable|string',
-        ]);
+        $data = $request->validated();
+
+        $user_id = $request->user()->id;
+
+        $data['user_id'] = $user_id;
+        $data['content_type_id'] = 1;
 
         $post = Post::create($data);
 
-        if ($request->has('hashtags')) {
-            $post->hashtags()->sync($request->hashtags);
-        }
+        $post->hashtags()->sync($request->input('hashtags', []));
 
-        return response()->json($post, 201);
+        return response()->json([
+            'success' => true,
+            'data' => $post
+        ], 201);
     }
 
     public function update(Request $request, Post $post)

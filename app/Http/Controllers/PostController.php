@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -24,7 +25,7 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $user_id = $request->user()->id;
+        $user_id = Auth::user()->id;
 
         $data['user_id'] = $user_id;
         $data['content_type_id'] = 1;

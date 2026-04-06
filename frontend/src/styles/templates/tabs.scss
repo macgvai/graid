@@ -1,0 +1,5 @@
+@use "../global/resources" as *;
+
+.tabs__content:not(.tabs__content--active) {
+  display: none;
+}

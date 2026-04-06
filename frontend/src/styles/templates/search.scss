@@ -1,0 +1,121 @@
+@use "../global/resources" as *;
+
+.search {
+  background-color: $white;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.search__query-wrapper {
+  padding-top: 52px;
+  padding-bottom: 48px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: $white;
+}
+
+.search__query {
+  display: block;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.search__query-text {
+  margin-left: 7px;
+}
+
+.search__no-results {
+  padding-top: 66px;
+  background-image: url("../img/no-results.png");
+  background-position: right 20px top 74%;
+  background-size: 406px 294px;
+  background-repeat: no-repeat;
+
+  @media (min-resolution: $retina-dpi), (min-resolution: $retina-dppx) {
+    background-image: url("../img/no-results@2x.png");
+    background-size: 406px 294px;
+  }
+}
+
+.search__results-wrapper {
+  padding-top: 40px;
+  background-color: $bg;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.search__content {
+  width: 760px;
+}
+
+.search__post {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.search__no-results-info {
+  width: 330px;
+  margin-top: 0;
+  margin-bottom: 46px;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.search__no-results-desc {
+  width: 375px;
+  margin-top: 0;
+  margin-bottom: 52px;
+  margin-left: -2px;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.search__links {
+  display: flex;
+  align-items: center;
+  max-width: 670px;
+}
+
+.search__popular-link {
+  padding: 21px 69px 19px;
+  letter-spacing: 0.55px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.search__back-link {
+  margin-left: 40px;
+  padding: 21px 0 19px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: rgba($main, 0.5);
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    color: $main;
+  }
+
+  &:active {
+    color: rgba($main, 0.3);
+  }
+}
+
+.search__post {
+  margin-bottom: 39px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.search__users-list,
+.search__photo-list,
+.search__video-list,
+.search__text-list,
+.search__quote-list,
+.search__link-list {
+  @include list-reset;
+}

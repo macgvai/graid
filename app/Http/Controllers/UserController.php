@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function register(StoreUserRequest $request)
+    public function register(StoreUserRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -53,10 +54,8 @@ class UserController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-        ], 201);
+        return redirect()->route('login')
+            ->with('status', 'Аккаунт успешно зарегистрирован! Добро пожаловать.');
     }
 
     public function logout(Request $request)

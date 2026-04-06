@@ -6,7 +6,7 @@ use App\Http\Controllers\PostController;
 
 
 Route::post('/register', [UserController::class, 'register'])->name('register ');
-Route::post('/login', [UserController::class, 'login'])->name('login ');
+Route::post('/login', [UserController::class, 'login'])->name('api.login');
 
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
-
-Route::post('/register', [UserController::class, 'register'])->name('register ');
-Route::post('/login', [UserController::class, 'login'])->name('api.login');
 
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -18,6 +18,8 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+
+        dd('aaaa');
         return $post->load(['author', 'contentType', 'hashtags']);
     }
 

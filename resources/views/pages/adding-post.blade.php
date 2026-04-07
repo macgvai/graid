@@ -57,10 +57,12 @@
               <li class="header__profile">
                 <a class="header__profile-link" href="#">
                   <div class="header__avatar-wrapper">
-                    <img class="header__profile-avatar" src="{{ asset('img/userpic.jpg') }}" alt="Аватар профиля">
+                      <img class="header__profile-avatar"
+                           src="{{ asset('storage/' . Auth::user()->avatar) }}"
+                           alt="Аватар профиля">
                   </div>
                   <div class="header__profile-name">
-                    <span>Антон Глуханько</span>
+                    <span>{{ Auth::user()->login }}</span>
                     <svg class="header__link-arrow" width="10" height="6">
                       <use xlink:href="#icon-arrow-right-ad"></use>
                     </svg>
@@ -543,7 +545,7 @@
     </div>
 
     <script src="{{ asset('libs/dropzone.js') }}"></script>
-    <script src="{{ asset('js/dropzone-settings.js') }}"></script>
+{{--    <script src="{{ asset('js/dropzone-settings.js') }}"></script>--}}
     <script src="{{ asset('js/main.js') }}"></script>
   </body>
 </html>

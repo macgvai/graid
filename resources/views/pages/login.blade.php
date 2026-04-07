@@ -58,7 +58,7 @@
                 <a class="header__user-button header__user-button--active header__authorization-button button">Вход</a>
               </li>
               <li>
-                <a class="header__user-button header__register-button button">Регистрация</a>
+                <a class="header__user-button header__register-button button" href="{{ route('registration') }}">Регистрация</a>
               </li>
             </ul>
           </nav>
@@ -72,41 +72,57 @@
       </div>
       <section class="login container">
         <h2 class="visually-hidden">Форма авторизации</h2>
-        <form class="login__form form" action="#" method="post">
-          <div class="form__text-inputs-wrapper">
-            <div class="form__text-inputs">
-              <div class="login__input-wrapper form__input-wrapper">
-                <label class="login__label form__label" for="login-email">Электронная почта <span class="form__input-required">*</span></label>
-                <div class="form__input-section">
-                  <input class="login__input form__input" id="login-email" type="email" name="email" placeholder="Укажите эл.почту">
-                  <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                  <div class="form__error-text">
-                    <h3 class="form__error-title">Заголовок сообщения</h3>
-                    <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+          <form class="login__form form" action="{{ route('web.login') }}" method="post">
+              @csrf
+
+              <div class="form__text-inputs-wrapper">
+                  <div class="form__text-inputs">
+
+                      <div class="login__input-wrapper form__input-wrapper">
+                          <label class="login__label form__label" for="login-email">
+                              Электронная почта <span class="form__input-required">*</span>
+                          </label>
+
+                          <div class="form__input-section {{ $errors->has('email') ? 'form__input-section--error' : '' }}">
+                              <input
+                                  class="login__input form__input"
+                                  id="login-email"
+                                  type="email"
+                                  name="email"
+                                  value="{{ old('email') }}"
+                                  placeholder="Укажите эл.почту"
+                              >
+
+                              @if ($errors->has('email'))
+                                  <button class="form__error-button button" type="button">!</button>
+                                  <div class="form__error-text">
+                                      <h3 class="form__error-title">Ошибка</h3>
+                                      <p class="form__error-desc">{{ $errors->first('email') }}</p>
+                                  </div>
+                              @endif
+                          </div>
+                      </div>
+
+                      <div class="login__input-wrapper form__input-wrapper">
+                          <label class="login__label form__label" for="login-password">
+                              Пароль <span class="form__input-required">*</span>
+                          </label>
+
+                          <div class="form__input-section {{ $errors->has('password') ? 'form__input-section--error' : '' }}">
+                              <input
+                                  class="login__input form__input"
+                                  id="login-password"
+                                  type="password"
+                                  name="password"
+                                  placeholder="Введите пароль"
+                              >
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
-              <div class="login__input-wrapper form__input-wrapper">
-                <label class="login__label form__label" for="login-password">Пароль <span class="form__input-required">*</span></label>
-                <div class="form__input-section">
-                  <input class="login__input form__input" id="login-password" type="password" name="password" placeholder="Введите пароль">
-                  <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                  <div class="form__error-text">
-                    <h3 class="form__error-title">Заголовок сообщения</h3>
-                    <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form__invalid-block">
-              <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-              <ul class="form__invalid-list">
-                <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-              </ul>
-            </div>
-          </div>
-          <button class="login__submit button button--main" type="submit">Отправить</button>
-        </form>
+
+              <button class="login__submit button button--main" type="submit">Отправить</button>
+          </form>
       </section>
     </main>
 

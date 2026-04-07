@@ -12,27 +12,24 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Неверный email или пароль'
-            ], 401);
+            return back()
+                ->withErrors([
+                    'email' => 'Неверный email или пароль',
+                ])
+                ->withInput();
         }
 
-        $user = Auth::user();
+        $request->session()->regenerate();
 
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-        ]);
+        return redirect()->route('main');
     }
 
     public function register(StoreUserRequest $request): RedirectResponse

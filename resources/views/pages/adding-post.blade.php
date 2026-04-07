@@ -122,7 +122,7 @@
           <div class="adding-post__tabs-wrapper tabs">
             <div class="adding-post__tabs filters">
               <ul class="adding-post__tabs-list filters__list tabs__list">
-                <li class="adding-post__tabs-item filters__item">
+                <li class="adding-post__tabs-item filters__item tabs__item">
                   <a class="adding-post__tabs-link filters__button filters__button--photo filters__button--active">
                     <svg class="filters__icon" width="22" height="18">
                       <use xlink:href="#icon-filter-photo"></use>
@@ -130,7 +130,7 @@
                     <span>Фото</span>
                   </a>
                 </li>
-                <li class="adding-post__tabs-item filters__item">
+                <li class="adding-post__tabs-item filters__item tabs__item">
                   <a class="adding-post__tabs-link filters__button filters__button--video" href="#">
                     <svg class="filters__icon" width="24" height="16">
                       <use xlink:href="#icon-filter-video"></use>
@@ -138,7 +138,7 @@
                     <span>Видео</span>
                   </a>
                 </li>
-                <li class="adding-post__tabs-item filters__item">
+                <li class="adding-post__tabs-item filters__item tabs__item">
                   <a class="adding-post__tabs-link filters__button filters__button--text" href="#">
                     <svg class="filters__icon" width="20" height="21">
                       <use xlink:href="#icon-filter-text"></use>
@@ -146,7 +146,7 @@
                     <span>Текст</span>
                   </a>
                 </li>
-                <li class="adding-post__tabs-item filters__item">
+                <li class="adding-post__tabs-item filters__item tabs__item">
                   <a class="adding-post__tabs-link filters__button filters__button--quote" href="#">
                     <svg class="filters__icon" width="21" height="20">
                       <use xlink:href="#icon-filter-quote"></use>
@@ -154,7 +154,7 @@
                     <span>Цитата</span>
                   </a>
                 </li>
-                <li class="adding-post__tabs-item filters__item">
+                <li class="adding-post__tabs-item filters__item tabs__item">
                   <a class="adding-post__tabs-link filters__button filters__button--link" href="#">
                     <svg class="filters__icon" width="21" height="18">
                       <use xlink:href="#icon-filter-link"></use>

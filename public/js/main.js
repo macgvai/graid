@@ -2,6 +2,147 @@
 
 'use script';
 
+//табы
+(function () {
+  var switchTabs = function (block) {
+    var tabsList = block.querySelector('.tabs__list');
+    var tabElements = tabsList.querySelectorAll('.tabs__item');
+    var tabContentSections = block.querySelectorAll('.tabs__content');
+    var activeTabIndex = 0;
+    var initialized = false;
+
+    var initializeSwitch = function () {
+      if (!initialized) {
+        var detected = false;
+        initialized = true;
+
+        for (var i = 0; i < tabElements.length; i++) {
+          var tab = tabElements[i];
+          if (detected && tab.classList.contains('tabs__item--active')) {
+            detected = true;
+            activeTabIndex = i;
+          }
+          addClickHandle(tab, i);
+        }
+      }
+    };
+
+    var addClickHandle = function (tab, index) {
+      tab.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        goToTab(index);
+      });
+    };
+
+    var goToTab = function (index) {
+      if (index !== activeTabIndex) {
+        tabElements[activeTabIndex].classList.remove('tabs__item--active');
+        tabElements[index].classList.add('tabs__item--active');
+        tabContentSections[activeTabIndex].classList.remove('tabs__content--active');
+        tabContentSections[index].classList.add('tabs__content--active');
+        if (tabElements[index].classList.contains('filters__button')) {
+          var activeFilter;
+          activeFilter = tabElements[index].parentNode.parentNode.querySelector('.filters__button--active');
+          activeFilter.classList.remove('filters__button--active');
+          activeFilter = tabElements[index];
+          activeFilter.classList.add('filters__button--active');
+        }
+        if (tabElements[index].classList.contains('messages__contacts-tab')) {
+          var activeContact;
+          activeContact = tabElements[index].parentNode.parentNode.querySelector('.messages__contacts-tab--active');
+          activeContact.classList.remove('messages__contacts-tab--active');
+          activeContact = tabElements[index];
+          activeContact.classList.add('messages__contacts-tab--active');
+        }
+        activeTabIndex = index;
+      }
+    };
+
+    initializeSwitch();
+
+    return {
+      init: initializeSwitch,
+      goToTab: goToTab
+    };
+  }
+
+  var addingPostTabs = document.querySelector('.adding-post__tabs-wrapper');
+  var profileTabs = document.querySelector('.profile__tabs-wrapper');
+  var messagesTabs = document.querySelector('.messages');
+
+  if (addingPostTabs) {
+    var addingPostCollback = switchTabs(addingPostTabs);
+  }
+
+  if (profileTabs) {
+    var profileCollback = switchTabs(profileTabs);
+  }
+
+  if (messagesTabs) {
+    var messagesCollback = switchTabs(messagesTabs);
+  }
+})();
+'use script';
+
+(function () {
+  var sorting = document.querySelector('.sorting');
+
+  if (sorting) {
+    var sortingLinks = sorting.querySelectorAll('.sorting__link');
+    var sortingLinkActive = sorting.querySelector('.sorting__link--active');
+
+    var onSortingItemClick = function (evt) {
+      evt.preventDefault();
+      if (evt.currentTarget === sortingLinkActive) {
+        sortingLinkActive.classList.toggle('sorting__link--reverse');
+      } else {
+        sortingLinkActive.classList.remove('sorting__link--active');
+        evt.currentTarget.classList.add('sorting__link--active');
+        sortingLinkActive = evt.currentTarget;
+      }
+    }
+
+    var addSortingListener = function (sortingItem) {
+      sortingItem.addEventListener('click', onSortingItemClick);
+    }
+
+    for (var i = 0; i < sortingLinks.length; i++) {
+      addSortingListener(sortingLinks[i]);
+    }
+  }
+})();
+'use script';
+
+(function () {
+  var filters = document.querySelector('.filters');
+
+  if (filters) {
+    var filtersButtons = filters.querySelectorAll('.filters__button:not(.tabs__item)');
+  }
+
+  if (filtersButtons) {
+    var filtersButtonActive = filters.querySelector('.filters__button--active');
+
+    var onFiltersButtonClick = function (evt) {
+      evt.preventDefault();
+      if (evt.currentTarget !== filtersButtonActive) {
+        filtersButtonActive.classList.remove('filters__button--active');
+        evt.currentTarget.classList.add('filters__button--active');
+        filtersButtonActive = evt.currentTarget;
+      }
+    }
+
+    var addFiltersListener = function (filtersButton) {
+      filtersButton.addEventListener('click', onFiltersButtonClick);
+    }
+
+    for (var i = 0; i < filtersButtons.length; i++) {
+      addFiltersListener(filtersButtons[i]);
+    }
+  }
+})();
+'use script';
+
 (function () {
   var ESC_KEYCODE = 27;
 
@@ -173,4 +314,4 @@
     });
   }
 })();
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJtYWluLmpzIl0sInNvdXJjZXNDb250ZW50IjpbIid1c2Ugc3RyaWN0JztcblxuLy89IHRlbXBsYXRlcy90YWJzLmpzXG4vLz0gdGVtcGxhdGVzL3NvcnRpbmcuanNcbi8vPSB0ZW1wbGF0ZXMvZmlsdGVycy5qc1xuLy89IHRlbXBsYXRlcy91dGlsLmpzXG4vLz0gdGVtcGxhdGVzL21vZGFsLmpzXG4vLz0gdGVtcGxhdGVzL2Ryb3B6b25lLXNldHRpbmdzLmpzXG4iXSwiZmlsZSI6Im1haW4uanMifQ==

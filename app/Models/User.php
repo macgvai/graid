@@ -48,6 +48,10 @@ class User extends Authenticatable
         'avatar',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     /**
      * @return array<string, string>
      */

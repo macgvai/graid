@@ -31,9 +31,11 @@ class SubscribeToUserService
                 'target_id' => $target->id,
             ]);
 
-            SendNewSubscriberNotificationJob::dispatch($subscription->id)
-                ->afterCommit()
-                ->delay(now()->addSeconds((int) $this->config->get('notifications.mail_delay_seconds', 0)));
+            if ($subscription->wasRecentlyCreated) {
+                SendNewSubscriberNotificationJob::dispatch($subscription->id)
+                    ->afterCommit()
+                    ->delay(now()->addSeconds((int) $this->config->get('notifications.mail_delay_seconds', 0)));
+            }
 
             return $subscription;
         });

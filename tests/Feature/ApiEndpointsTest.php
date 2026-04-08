@@ -25,6 +25,7 @@ class ApiEndpointsTest extends TestCase
         ]);
 
         $registerResponse->assertCreated();
+        $registerResponse->assertJsonMissingPath('data.password');
         $this->assertDatabaseHas('users', [
             'email' => 'api@example.com',
             'login' => 'api-user',
@@ -37,6 +38,7 @@ class ApiEndpointsTest extends TestCase
 
         $loginResponse->assertOk();
         $loginResponse->assertJsonStructure(['token', 'user' => ['id', 'email', 'login']]);
+        $loginResponse->assertJsonMissingPath('user.password');
 
         $user = User::query()->where('email', 'api@example.com')->firstOrFail();
         Sanctum::actingAs($user);
@@ -83,7 +85,8 @@ class ApiEndpointsTest extends TestCase
 
         $this->getJson(route('api.users.show', $user))
             ->assertOk()
-            ->assertJsonPath('user.id', $user->id);
+            ->assertJsonPath('user.id', $user->id)
+            ->assertJsonMissingPath('user.password');
 
         $this->postJson(route('api.subscriptions.store', $target))
             ->assertCreated();

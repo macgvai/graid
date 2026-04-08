@@ -2,12 +2,23 @@
 
 namespace App\Models;
 
+use Database\Factories\LikeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $post_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read User $user
+ * @property-read Post $post
+ */
 class Like extends Model
 {
-    /** @use HasFactory<\Database\Factories\LikeFactory> */
+    /** @use HasFactory<LikeFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -15,16 +26,12 @@ class Like extends Model
         'post_id',
     ];
 
-    public $timestamps = true;
-
-    /** Кто поставил лайк */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /** Какой пост лайкнули */
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }

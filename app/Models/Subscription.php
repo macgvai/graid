@@ -2,12 +2,23 @@
 
 namespace App\Models;
 
+use Database\Factories\SubscriptionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $author_id
+ * @property int $target_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read User $author
+ * @property-read User $target
+ */
 class Subscription extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubscriptionFactory> */
+    /** @use HasFactory<SubscriptionFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -15,16 +26,13 @@ class Subscription extends Model
         'target_id',
     ];
 
-    /** Подписавшийся */
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    /** На кого подписались */
-    public function target()
+    public function target(): BelongsTo
     {
         return $this->belongsTo(User::class, 'target_id');
     }
-
 }

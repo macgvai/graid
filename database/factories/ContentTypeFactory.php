@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostType;
 use App\Models\ContentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,15 +11,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ContentTypeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $postType = fake()->randomElement(PostType::cases());
+
         return [
-            //
+            'name' => $postType->label(),
+            'icon_class' => $postType->iconClass(),
         ];
     }
 }

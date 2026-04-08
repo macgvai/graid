@@ -2,76 +2,109 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property string $login
+ * @property string $email
+ * @property string $password
+ * @property string|null $avatar
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Like> $likes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $followers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $followedUsers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $subscribers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $likedPosts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Message> $sentMessages
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Message> $receivedMessages
+ * @property-read int|null $followers_count
+ * @property-read int|null $posts_count
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    /** @use HasApiTokens<\Laravel\Sanctum\PersonalAccessToken> */
+    use HasApiTokens;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    /** @use HasFactory<UserFactory> */
+    use HasFactory;
+
+    use Notifiable;
 
     protected $fillable = [
         'login',
         'email',
         'password',
         'avatar',
-        'registered_at',
     ];
 
-    /** Посты пользователя */
-    public function posts()
+    /**
+     * @return array<string, string>
+     */
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
+
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    /** Комментарии пользователя */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    /** Лайки пользователя */
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
     }
 
-    /** На кого он подписан */
-    public function subscriptions()
+    public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class, 'author_id');
     }
 
-    /** Его подписчики */
-    public function followers()
+    public function followers(): HasMany
     {
         return $this->hasMany(Subscription::class, 'target_id');
     }
 
-    /** Отправленные сообщения */
-    public function sentMessages()
+    public function followedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'subscriptions', 'author_id', 'target_id');
+    }
+
+    public function subscribers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'subscriptions', 'target_id', 'author_id');
+    }
+
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
+    }
+
+    public function sentMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    /** Полученные сообщения */
-    public function receivedMessages()
+    public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }

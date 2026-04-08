@@ -2,28 +2,46 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreMessageRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() !== null;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'sender_id' => ['required', 'integer', 'exists:users,id'],
+            'receiver_id' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                'different:sender_id',
+            ],
+            'content' => ['required', 'string'],
         ];
+    }
+
+    #[\Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'sender_id' => $this->user()?->getKey(),
+            'content' => $this->normalize($this->input('content')),
+        ]);
+    }
+
+    private function normalize(mixed $value): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $normalized = trim($value);
+
+        return $normalized === '' ? null : $normalized;
     }
 }

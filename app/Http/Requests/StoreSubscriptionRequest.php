@@ -2,28 +2,34 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSubscriptionRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() !== null;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'author_id' => ['required', 'integer', 'exists:users,id'],
+            'target_id' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                'different:author_id',
+            ],
         ];
+    }
+
+    #[\Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'author_id' => $this->user()?->getKey(),
+            'target_id' => $this->route('user')?->getKey(),
+        ]);
     }
 }

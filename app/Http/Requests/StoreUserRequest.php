@@ -14,13 +14,14 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => 'required|string|max:255|unique:users,login',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'avatar' => 'nullable|image|max:2048',
+            'login' => ['required', 'string', 'max:255', 'unique:users,login'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'avatar' => ['nullable', 'image', 'max:2048'],
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [
@@ -35,5 +36,18 @@ class StoreUserRequest extends FormRequest
             'avatar.image' => 'Аватар должен быть изображением.',
             'avatar.max' => 'Размер аватара не должен превышать 2 МБ.',
         ];
+    }
+
+    #[\Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'login' => is_string($this->input('login'))
+                ? trim($this->input('login'))
+                : $this->input('login'),
+            'email' => is_string($this->input('email'))
+                ? trim($this->input('email'))
+                : $this->input('email'),
+        ]);
     }
 }

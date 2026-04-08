@@ -2,69 +2,131 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Models\Post;
+use App\Models\User;
+use App\Services\Posts\PostPublishingService;
+use App\Services\Posts\PostViewService;
+use App\Services\Posts\RepostPostService;
+use App\Services\Posts\YouTubeUrlParser;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request, PostViewService $postViewService): JsonResponse
     {
-        return 'test';
-//        return Post::with(['author', 'contentType', 'hashtags'])->paginate(20);
+        /** @var User $viewer */
+        $viewer = $request->user();
+
+        return response()->json($postViewService->recent($viewer));
     }
 
-    public function show(Post $post)
+    public function show(Request $request, Post $post, YouTubeUrlParser $youTubeUrlParser): JsonResponse
     {
-
-        dd('aaaa');
-        return $post->load(['author', 'contentType', 'hashtags']);
-    }
-
-    public function store(StorePostRequest $request)
-    {
-        $data = $request->validated();
-
-        $user_id = Auth::user()->id;
-
-        $data['user_id'] = $user_id;
-        $data['content_type_id'] = 1;
-
-        $post = Post::create($data);
-
-        $post->hashtags()->sync($request->input('hashtags', []));
+        $this->incrementViews($post);
 
         return response()->json([
-            'success' => true,
-            'data' => $post
-        ], 201);
+            'data' => $this->loadDetails($request, $post),
+            'youtube_embed_url' => $post->video !== null
+                ? $youTubeUrlParser->embedUrl($post->video)
+                : null,
+        ]);
     }
 
-    public function update(Request $request, Post $post)
+    public function showPage(Request $request, Post $post, YouTubeUrlParser $youTubeUrlParser): View
     {
-        $data = $request->validate([
-            'title' => 'nullable|string',
-            'text_content' => 'nullable|string',
-            'quote_author' => 'nullable|string',
-            'image' => 'nullable|string',
-            'video' => 'nullable|string',
-            'link' => 'nullable|string',
+        $this->incrementViews($post);
+        $post = $this->loadDetails($request, $post);
+
+        return view('pages.post-show', [
+            'post' => $post,
+            'youtubeEmbedUrl' => $post->video !== null
+                ? $youTubeUrlParser->embedUrl($post->video)
+                : null,
         ]);
+    }
 
-        $post->update($data);
+    public function store(
+        StorePostRequest $request,
+        PostPublishingService $postPublishingService,
+    ): JsonResponse|RedirectResponse {
+        $postType = $request->postType();
 
-        if ($request->has('hashtags')) {
-            $post->hashtags()->sync($request->hashtags);
+        abort_if($postType === null, 404);
+
+        /** @var User $author */
+        $author = $request->user();
+        $post = $postPublishingService->publish(
+            $author,
+            $postType,
+            $request->validated(),
+            $request->file('image_file'),
+        );
+
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'data' => $post,
+            ], 201);
         }
 
-        return $post;
+        return redirect()->route('posts.show', $post);
     }
 
-    public function destroy(Post $post)
+    public function repost(
+        Request $request,
+        Post $post,
+        RepostPostService $repostPostService,
+    ): JsonResponse|RedirectResponse {
+        /** @var User $author */
+        $author = $request->user();
+        $repost = $repostPostService->repost($author, $post);
+
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'data' => $repost,
+            ], 201);
+        }
+
+        return redirect()->route('users.show', $author);
+    }
+
+    private function incrementViews(Post $post): void
     {
-        $post->delete();
-        return response()->noContent();
+        Post::query()->whereKey($post->getKey())->increment('views');
+        $post->views++;
+    }
+
+    private function loadDetails(Request $request, Post $post): Post
+    {
+        /** @var User|null $viewer */
+        $viewer = $request->user();
+
+        $post->load([
+            'author',
+            'contentType',
+            'hashtags',
+            'comments.author',
+            'originalAuthor',
+            'originalPost.author',
+        ])->loadCount(['comments', 'likes', 'reposts']);
+
+        if ($viewer !== null) {
+            $post->loadCount([
+                'likes as liked_by_viewer' => static function (Builder $query) use ($viewer): void {
+                    $query->where('user_id', $viewer->id);
+                },
+            ]);
+        }
+
+        $author = $post->author;
+        $author->loadCount(['followers', 'posts']);
+
+        return $post;
     }
 }

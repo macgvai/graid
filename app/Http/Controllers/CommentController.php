@@ -2,37 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
-use App\Http\Requests\UpdateCommentRequest;
+use App\Models\Post;
+use App\Models\User;
+use App\Services\Comments\CommentPublishingService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'post_id' => 'required|exists:posts,id',
-            'content' => 'required|string',
-        ]);
+    public function store(
+        StoreCommentRequest $request,
+        Post $post,
+        CommentPublishingService $commentPublishingService,
+    ): JsonResponse|RedirectResponse {
+        /** @var User $author */
+        $author = $request->user();
 
-        return Comment::create($data);
-    }
+        $comment = $commentPublishingService->publish(
+            $author,
+            $post,
+            (string) $request->validated('content'),
+        );
 
-    public function update(Request $request, Comment $comment)
-    {
-        $data = $request->validate([
-            'content' => 'required|string',
-        ]);
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'data' => $comment,
+            ], 201);
+        }
 
-        $comment->update($data);
-
-        return $comment;
-    }
-
-    public function destroy(Comment $comment)
-    {
-        $comment->delete();
-        return response()->noContent();
+        return redirect()->route('users.show', $post->author);
     }
 }

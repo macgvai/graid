@@ -18,7 +18,7 @@
 
         for (var i = 0; i < tabElements.length; i++) {
           var tab = tabElements[i];
-          if (detected && tab.classList.contains('tabs__item--active')) {
+          if (!detected && tab.classList.contains('tabs__item--active')) {
             detected = true;
             activeTabIndex = i;
           }

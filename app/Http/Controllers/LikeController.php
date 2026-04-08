@@ -2,25 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Http\Requests\StoreLikeRequest;
-use App\Http\Requests\UpdateLikeRequest;
+use App\Models\Post;
+use App\Models\User;
+use App\Services\Likes\PostLikeService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class LikeController extends Controller
 {
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'post_id' => 'required|exists:posts,id',
-        ]);
+    public function store(
+        StoreLikeRequest $request,
+        Post $post,
+        PostLikeService $postLikeService,
+    ): JsonResponse|RedirectResponse {
+        /** @var User $user */
+        $user = $request->user();
+        $like = $postLikeService->like($user, $post);
 
-        return Like::firstOrCreate($data);
-    }
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'data' => $like,
+            ], 201);
+        }
 
-    public function destroy(Like $like)
-    {
-        $like->delete();
-        return response()->noContent();
+        return redirect()->back();
     }
 }

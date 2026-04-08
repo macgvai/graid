@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'thumbnail_ws' => [
+        'key' => env('THUMBNAIL_WS_KEY'),
+        'width' => env('THUMBNAIL_WS_WIDTH', 640),
+    ],
+
 ];

@@ -21,7 +21,6 @@ class StoreUserRequest extends FormRequest
         ];
     }
 
-    #[\Override]
     public function messages(): array
     {
         return [
@@ -38,7 +37,6 @@ class StoreUserRequest extends FormRequest
         ];
     }
 
-    #[\Override]
     protected function prepareForValidation(): void
     {
         $this->merge([

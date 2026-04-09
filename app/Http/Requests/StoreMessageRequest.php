@@ -25,7 +25,6 @@ class StoreMessageRequest extends FormRequest
         ];
     }
 
-    #[\Override]
     protected function prepareForValidation(): void
     {
         $this->merge([

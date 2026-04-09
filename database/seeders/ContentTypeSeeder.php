@@ -14,16 +14,13 @@ class ContentTypeSeeder extends Seeder
     public function run(): void
     {
         foreach (PostType::cases() as $postType) {
-            $contentType = ContentType::query()->find($postType->value);
-
-            if ($contentType === null) {
-                $contentType = new ContentType();
-                $contentType->id = $postType->value;
-            }
-
-            $contentType->name = $postType->label();
-            $contentType->icon_class = $postType->iconClass();
-            $contentType->save();
+            ContentType::query()->updateOrCreate(
+                ['id' => $postType->value],
+                [
+                    'name' => $postType->label(),
+                    'icon_class' => $postType->iconClass(),
+                ],
+            );
         }
     }
 }

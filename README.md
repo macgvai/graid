@@ -21,9 +21,12 @@ mkdir -p bootstrap/cache
 # 7. ссылка на storage
 ./vendor/bin/sail artisan storage:link
 
-## Demo account
+# 8. Очереди
+./vendor/bin/sail artisan queue:work
 
+# 9 почта http://localhost:8025/
+
+## Demo account
 - Email: `test@example.com`
 - Password: `password`
 
-The demo user is created by `DatabaseSeeder`.

@@ -35,6 +35,9 @@
         }
     },
     "scripts": {
+        "pre-autoload-dump": [
+            "@php -r \"foreach (['bootstrap/cache','storage/framework/cache','storage/framework/sessions','storage/framework/views'] as $dir) { if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) { fwrite(STDERR, 'Failed to create required directory: ' . $dir . PHP_EOL); exit(1); } }\""
+        ],
         "setup": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php -r \"foreach (['storage/framework/views','storage/framework/cache','storage/framework/sessions','bootstrap/cache'] as $dir) { if (!is_dir($dir)) mkdir($dir, 0777, true); }\"",

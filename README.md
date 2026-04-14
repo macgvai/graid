@@ -1,9 +1,11 @@
-# 1. зависимости
-composer install
-
-# 2. создать нужные папки (важно!)
+php 8.4
+# 1. создать нужные папки (важно!)
 mkdir -p storage/framework/{views,cache,sessions}
 mkdir -p bootstrap/cache
+
+# 2. зависимости
+composer install
+
 
 # 3. поднять контейнеры
 ./vendor/bin/sail up -d

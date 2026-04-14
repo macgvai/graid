@@ -41,9 +41,9 @@
         "setup": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php scripts/ensure-runtime-dirs.php",
-            "./vendor/bin/sail up -d",
+            "./vendor/bin/sail up -d --force-recreate",
             "./vendor/bin/sail artisan key:generate --ansi",
-            "./vendor/bin/sail artisan migrate --force --ansi",
+            "./vendor/bin/sail artisan migrate:fresh --force --ansi",
             "./vendor/bin/sail artisan db:seed --force --ansi",
             "./vendor/bin/sail artisan optimize:clear --ansi",
             "./vendor/bin/sail artisan storage:link --force --ansi"

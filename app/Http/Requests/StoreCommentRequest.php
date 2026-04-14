@@ -19,6 +19,7 @@ class StoreCommentRequest extends FormRequest
         ];
     }
 
+    #[\Override]
     public function attributes(): array
     {
         return [
@@ -26,6 +27,7 @@ class StoreCommentRequest extends FormRequest
         ];
     }
 
+    #[\Override]
     protected function prepareForValidation(): void
     {
         $this->merge([

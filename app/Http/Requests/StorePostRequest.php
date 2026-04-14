@@ -102,6 +102,7 @@ class StorePostRequest extends FormRequest
         });
     }
 
+    #[\Override]
     public function attributes(): array
     {
         return [
@@ -116,6 +117,7 @@ class StorePostRequest extends FormRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [
@@ -130,6 +132,7 @@ class StorePostRequest extends FormRequest
         return PostType::tryFrom($this->resolvePostTypeValue());
     }
 
+    #[\Override]
     protected function prepareForValidation(): void
     {
         $this->merge([

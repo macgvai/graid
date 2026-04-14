@@ -48,25 +48,13 @@
             "./vendor/bin/sail artisan optimize:clear --ansi",
             "./vendor/bin/sail artisan storage:link --force --ansi"
         ],
-        "dev": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "./vendor/bin/sail up -d",
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"./vendor/bin/sail artisan queue:listen --tries=1 --timeout=0\" \"./vendor/bin/sail artisan pail --timeout=0\" \"./vendor/bin/sail npm run dev\" --names=queue,logs,vite --kill-others"
-        ],
         "test": [
             "./vendor/bin/sail up -d",
             "./vendor/bin/sail artisan config:clear --ansi",
             "./vendor/bin/sail artisan test"
         ],
-        "phpcs": [
-            "./vendor/bin/sail up -d",
-            "./vendor/bin/sail php vendor/bin/phpcs"
-        ],
-        "psalm": [
-            "./vendor/bin/sail up -d",
-            "./vendor/bin/sail php vendor/bin/psalm --no-progress"
-        ],
+        "phpcs": "@php vendor/bin/phpcs",
+        "psalm": "@php vendor/bin/psalm --no-progress",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

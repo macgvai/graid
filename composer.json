@@ -37,8 +37,7 @@
     "scripts": {
         "setup": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "mkdir -p storage/framework/{views,cache,sessions}",
-            "mkdir -p bootstrap/cache",
+            "@php -r \"foreach (['storage/framework/views','storage/framework/cache','storage/framework/sessions','bootstrap/cache'] as $dir) { if (!is_dir($dir)) mkdir($dir, 0777, true); }\"",
             "./vendor/bin/sail up -d",
             "./vendor/bin/sail artisan key:generate --ansi",
             "./vendor/bin/sail artisan migrate --force --ansi",

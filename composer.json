@@ -46,9 +46,7 @@
             "./vendor/bin/sail artisan migrate --force --ansi",
             "./vendor/bin/sail artisan db:seed --force --ansi",
             "./vendor/bin/sail artisan optimize:clear --ansi",
-            "./vendor/bin/sail artisan storage:link --force --ansi",
-            "./vendor/bin/sail npm install --ignore-scripts",
-            "./vendor/bin/sail npm run build"
+            "./vendor/bin/sail artisan storage:link --force --ansi"
         ],
         "dev": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

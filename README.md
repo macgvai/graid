@@ -1,4 +1,9 @@
+На проект затраченно около 20 часов 
+
 php 8.4
+composer install
+composer run setup
+
 # 1. создать нужные папки (важно!)
 mkdir -p storage/framework/{views,cache,sessions}
 mkdir -p bootstrap/cache
